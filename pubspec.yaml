@@ -37,7 +37,7 @@ dependencies:
   flutter_hooks: ^0.18.1
   flutter_scankit: ^1.2.2
   bot_toast: ^4.0.1
-  flutter_easy_permission: ^1.1.1
+  flutter_easy_permission: ^1.1.2
   local_auth: ^1.1.9
   flutter_gesture_unlock: ^1.0.6
   package_info: ^2.0.2

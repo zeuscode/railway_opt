@@ -160,11 +160,10 @@ class ManTarAddPage extends HookWidget {
                 SizedBox(
                   height: 48,
                   child: TextField(
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly,
-                    ],
+                    // inputFormatters: [
+                    //   WhitelistingTextInputFormatter.digitsOnly,
+                    // ],
                     controller: controller,
-                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       hintText: "请输入激活密码",
                       border: OutlineInputBorder(
@@ -200,7 +199,7 @@ class ManTarAddPage extends HookWidget {
           )).then((value) async {
         if (value!= null ) {
           if (controller.value.text.trim() != appCode) {
-            BotToast.showText(text: '激活密码错误');
+            BotToast.showText(text: '激活密码错误==${appCode}');
             return;
           }
           bool isExist = await mantarDatabase
@@ -209,9 +208,13 @@ class ManTarAddPage extends HookWidget {
             BotToast.showText(text: '口令已经添加，不能重复添加');
             return;
           }
+
+
           MantraModel? mode = await mantarDatabase.addMantar(MantraModel(
-              code: encryptCode, interval: interval,qrCode: code));
+              code: encryptCode, interval: interval??"",qrCode: code));
           BotToast.showText(text: '添加成功');
+
+
         }
       });
     } else {

@@ -13,6 +13,50 @@ import 'package:railway_opt/widget/my_list_tile.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'databases/mantras_database.dart';
+// class ManTarListPage extends StatefulWidget {
+//   const ManTarListPage({Key? key}) : super(key: key);
+//
+//   @override
+//   State<ManTarListPage> createState() => _ManTarListPageState();
+// }
+//
+// class _ManTarListPageState extends State<ManTarListPage> {
+//   late MantarRepository dbRepository;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
+//
+//
+//   void test() async{
+//     dbRepository = MantarRepository(MantraDatabase());
+//     List<MantraModel>? data = await dbRepository.getMantras();
+//     if(data!=null) {
+//       BotToast.showText(text: '***${data.length}');
+//     }else{
+//       BotToast.showText(text: '!!!!');
+//     }
+//
+//
+//
+//   }
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     dbRepository = MantarRepository(MantraDatabase());
+//     test();
+
+//   }
+// }
 
 class ManTarListPage extends HookWidget {
   const ManTarListPage({Key? key}) : super(key: key);
@@ -22,32 +66,81 @@ class ManTarListPage extends HookWidget {
     MantarRepository mantarDatabase =
         useMemoized(() => MantarRepository(MantraDatabase()));
 
-    AsyncSnapshot<List<MantraModel>> mantarsSnapshot =
-        useFuture(mantarDatabase.getMantras());
     return Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("已激活的令牌:",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600)),
-            const SizedBox(
-              height: 16.0,
-            ),
-            ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return _itemBuilder(context, mantarsSnapshot.data!, index);
-                },
-                separatorBuilder: (_, __) => const Divider(
-                      height: 0.5,
-                    ),
-                itemCount: mantarsSnapshot.data?.length ?? 0),
-          ],
-        ));
+      child: FutureBuilder(
+          future: mantarDatabase.getMantras(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<MantraModel>> snapshot) {
+
+                return Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("已激活的令牌:",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600)),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return _itemBuilder(context, snapshot.data!, index);
+                            },
+                            separatorBuilder: (_, __) => const Divider(
+                              height: 0.5,
+                            ),
+                            itemCount: snapshot.data?.length ?? 0),
+                      ],
+                    ));
+
+          }),
+    );
+
+    // MantarRepository mantarDatabase =
+    // useMemoized(() => MantarRepository(MantraDatabase()));
+    //
+    // AsyncSnapshot<List<MantraModel>> mantarsSnapshot =
+    //     useFuture(mantarDatabase.getMantras());
+
+    // if(mantarDatabase.getMantras()){
+    //   BotToast.showText(text: "有数据");
+    // }else{
+    //   BotToast.showText(text: "无有数据");
+    // }
+    // return Container(
+    //   child: Text('${
+    //       mantarsSnapshot.data?.length
+    //   }'),
+    // );
+
+    // return Container(
+    //     padding: const EdgeInsets.all(16.0),
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         const Text("已激活的令牌:",
+    //             style: TextStyle(
+    //                 color: Colors.black,
+    //                 fontSize: 18.0,
+    //                 fontWeight: FontWeight.w600)),
+    //         const SizedBox(
+    //           height: 16.0,
+    //         ),
+    //         ListView.separated(
+    //             shrinkWrap: true,
+    //             itemBuilder: (context, index) {
+    //               return _itemBuilder(context, mantarsSnapshot.data!, index);
+    //             },
+    //             separatorBuilder: (_, __) => const Divider(
+    //                   height: 0.5,
+    //                 ),
+    //             itemCount: mantarsSnapshot.data?.length ?? 0),
+    //       ],
+    //     ));
   }
 
   Widget _itemBuilder(
@@ -101,3 +194,4 @@ class ManTarListPage extends HookWidget {
 
 
 }
+
