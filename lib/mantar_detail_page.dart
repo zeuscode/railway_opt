@@ -6,11 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:optencrypt/otpencrypt.dart';
 import 'package:railway_opt/utils/json_config.dart';
+import 'package:railway_opt/utils/mantra_util.dart';
 import 'package:railway_opt/widget/circle_progress_view.dart';
 
 import 'model/mantra_model.dart';
 
-class MantarDetailPage extends HookWidget{
+class MantarDetailPage extends HookWidget {
   const MantarDetailPage({Key? key}) : super(key: key);
 
   @override
@@ -22,13 +23,13 @@ class MantarDetailPage extends HookWidget{
     ValueNotifier<String> otpCoded = useState(opt);
     return GestureDetector(
       onLongPress: () {
-        Clipboard.setData(ClipboardData(text:  otpCoded.value)).then((value) {
+        Clipboard.setData(ClipboardData(text: otpCoded.value)).then((value) {
           BotToast.showText(text: '复制成功');
         });
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('${model.code}'),
+          title: Text('${MantraUtil.wrapperCode(model.code)}'),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -55,7 +56,7 @@ class MantarDetailPage extends HookWidget{
                 progressWidth: 26,
                 callback: () async {
                   String? callOpt = await OTPEncrypt.calOTP(model.qrCode!);
-                  if(callOpt!=null){
+                  if (callOpt != null) {
                     otpCoded.value = callOpt;
                   }
                 },
@@ -68,10 +69,4 @@ class MantarDetailPage extends HookWidget{
       ),
     );
   }
-
-
 }
-
-
-
-
